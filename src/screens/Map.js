@@ -8,11 +8,11 @@ export default function Map() {
   return <div>
     <EnviroMap />
     {/* <div style={{ width: "100%", height: "500px" }} id="enviroMap"></div> */}
-    {/* <div>
+    <div>
       <Button variant="contained" disableElevation id="connectButton">Connect</Button>
-    </div> */}
+    </div>
   </div>;
 }
 
-// const button = document.querySelector('#connectButton')
-// console.log(button)
+const button = document.querySelector('#connectButton')
+console.log(button)

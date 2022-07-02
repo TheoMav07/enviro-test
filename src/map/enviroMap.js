@@ -3,16 +3,16 @@ import L from 'leaflet'
 import firebase from 'firebase/compat'
 
 export default function EnviroMap() {
-    var all = L.layerGroup();
-	var today = L.layerGroup();
-	var lastHour = L.layerGroup();
-    
-    useEffect(() => {
-        var container = L.DomUtil.get('enviroMap');
-        if (container != null) {
-            container._leaflet_id = null;
-        }
-    const mymap = L.map('enviroMap').fitWorld();
+  var all = L.layerGroup();
+  var today = L.layerGroup();
+  var lastHour = L.layerGroup();
+
+  useEffect(() => {
+    var container = L.DomUtil.get('enviroMap');
+    if (container != null) {
+      container._leaflet_id = null;
+    }
+    const mymap = L.map('enviroMap', {layers: lastHour}).fitWorld();
     const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const attribution = '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors';
     const tiles = L.tileLayer(tileUrl, { attribution });
@@ -23,8 +23,23 @@ export default function EnviroMap() {
       "All": all
     };
     var layerControl = L.control.layers(overlayMaps).addTo(mymap);
-
     
+    mymap.on('locationfound', onLocationFound);
+    mymap.on('locationerror', onLocationError);
+    mymap.locate({ setView: true, maxZoom: 10 });
+
+    function onLocationFound(e) {
+      var radius = e.accuracy / 2;
+      mymap.setView(e.latlng, 20);
+      L.marker(e.latlng).addTo(mymap)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+      L.circle(e.latlng, radius).addTo(mymap);
+    }
+    function onLocationError(e) {
+      alert(e.message);
+    }
+
+
 
     var firebaseConfig = {
       apiKey: "AIzaSyBi2EOWgViitTUi4BlN1LuKM03sVEBXNhw",
@@ -45,11 +60,11 @@ export default function EnviroMap() {
     //Όταν πάρω τα δεδομένα σωστά θα τρέξει η gotData αλλιώς θα τρέξει η errData
     ref.on('value', gotData, errData);
 
-    }, []);
+  }, []);
 
 
   function gotData(data) {
-      var greenIcon = new L.Icon({
+    var greenIcon = new L.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
       iconSize: [25, 41],
@@ -103,7 +118,7 @@ export default function EnviroMap() {
       var particles = Number(metrisi_data[7].substr(0, metrisi_data[7].length - 4));
       //Προσθέτω έναν marker στον πίνακα markers με το γεωγραφικό πλάτος και μήκος της κάθε μέτρησης
       if (temperature > 10 && temperature < 25) {
-        markers[i] = L.marker([latitude, longtitude],  { icon: greenIcon }).addTo(all);
+        markers[i] = L.marker([latitude, longtitude], { icon: greenIcon }).addTo(all);
       } else if (temperature > 0 && temperature < 30) {
         markers[i] = L.marker([latitude, longtitude], { icon: orangeIcon }).addTo(all);
       } else {
@@ -121,26 +136,15 @@ export default function EnviroMap() {
       }
       //markers[i] = L.marker([latitude, longtitude]).addTo(mymap);					
     }
-    
+
   }
-  function onLocationFound(e) {
-				var radius = e.accuracy / 2;
-				mymap.setView(e.latlng, 20);
-				L.marker(e.latlng).addTo(mymap)
-				.bindPopup("You are within " + radius + " meters from this point").openPopup();
-				L.circle(e.latlng, radius).addTo(mymap);
-			}
-			function onLocationError(e) {
-				alert(e.message);
-			}
-			mymap.on('locationfound', onLocationFound);
-			mymap.on('locationerror', onLocationError);
-			mymap.locate({setView: true, maxZoom: 10});
-  function errData(err) {
-		console.log('Error!');
-	    console.log(err);
-    }
 
   
-    return <div style={{ width: "100%", height: "500px" }} id="enviroMap"></div>
+  function errData(err) {
+    console.log('Error!');
+    console.log(err);
+  }
+
+
+  return <div style={{ width: "100%", height: "500px" }} id="enviroMap"></div>
 }
