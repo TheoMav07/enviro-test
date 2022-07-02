@@ -9,10 +9,12 @@ export default function Map() {
     <EnviroMap />
     {/* <div style={{ width: "100%", height: "500px" }} id="enviroMap"></div> */}
     <div>
-      <Button variant="contained" disableElevation id="connectButton">Connect</Button>
+      <Button variant="contained" disableElevation id="connectButton" onClick={Connect()}>Connect</Button>
     </div>
   </div>;
 }
 
-const button = document.querySelector('#connectButton')
-console.log(button)
+
+function Connect() {
+    console.log("Clicked")
+}
