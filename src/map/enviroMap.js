@@ -1,55 +1,30 @@
-import React from 'react'
+import { React, useEffect } from 'react'
 import L from 'leaflet'
 import firebase from 'firebase/compat'
 
-export default class EnviroMap extends React.Component {
-  componentDidMount() {
-    var container = L.DomUtil.get('enviroMap');
-    if (container != null) {
-      container._leaflet_id = null;
-    }
-    
+export default function EnviroMap() {
     var all = L.layerGroup();
 	var today = L.layerGroup();
 	var lastHour = L.layerGroup();
+    
+    useEffect(() => {
+        var container = L.DomUtil.get('enviroMap');
+        if (container != null) {
+            container._leaflet_id = null;
+        }
     const mymap = L.map('enviroMap').fitWorld();
     const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const attribution = '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors';
     const tiles = L.tileLayer(tileUrl, { attribution });
     tiles.addTo(mymap);
-    this.overlayMaps = {
+    var overlayMaps = {
       "Last Hour": lastHour,
       "Today": today,
       "All": all
     };
-    var layerControl = L.control.layers(this.overlayMaps).addTo(mymap);
+    var layerControl = L.control.layers(overlayMaps).addTo(mymap);
 
-    this.greenIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-    this.orangeIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-    this.redIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
+    
 
     var firebaseConfig = {
       apiKey: "AIzaSyBi2EOWgViitTUi4BlN1LuKM03sVEBXNhw",
@@ -68,11 +43,38 @@ export default class EnviroMap extends React.Component {
     //Δημιουργώ μια μεταβλητή για να αποθηκεύσω την αναφορά στα δεδομένα της βάσης
     var ref = database.ref('Envirosocial');
     //Όταν πάρω τα δεδομένα σωστά θα τρέξει η gotData αλλιώς θα τρέξει η errData
-    ref.on('value', this.gotData, this.errData);
+    ref.on('value', gotData, errData);
 
-  }
+    }, []);
 
-  gotData(data) {
+
+  function gotData(data) {
+      var greenIcon = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
+    var orangeIcon = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
+    var redIcon = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
     //Παίρνω τα δεδομένα στην μεταβλητή μετρήσεις
     var metriseis = data.val();
     //Παίρνω τα κλειδιά (όνομα χρήστη και ημερομηνία-ώρα) στην μεταβλητή keys
@@ -101,13 +103,12 @@ export default class EnviroMap extends React.Component {
       var particles = Number(metrisi_data[7].substr(0, metrisi_data[7].length - 4));
       //Προσθέτω έναν marker στον πίνακα markers με το γεωγραφικό πλάτος και μήκος της κάθε μέτρησης
       if (temperature > 10 && temperature < 25) {
-        markers[i] = L.marker([latitude, longtitude], { icon: this.greenIcon }).addTo(all);
+        markers[i] = L.marker([latitude, longtitude],  { icon: greenIcon }).addTo(all);
+      } else if (temperature > 0 && temperature < 30) {
+        markers[i] = L.marker([latitude, longtitude], { icon: orangeIcon }).addTo(all);
+      } else {
+        markers[i] = L.marker([latitude, longtitude], { icon: redIcon }).addTo(all);
       }
-    //    else if (temperature > 0 && temperature < 30) {
-    //     markers[i] = L.marker([latitude, longtitude], { icon: this.orangeIcon }).addTo(all);
-    //   } else {
-    //     markers[i] = L.marker([latitude, longtitude], { icon: this.redIcon }).addTo(all);
-    //   }
       //Προσθέτω στον marker τα δεδομένα σε παράθυρο pop up
       markers[i].bindPopup("<b>Measurement by " + username + "</b><br>Date:" + date + "<br>Temperature: " + temperature + " Celcius<br>Humidity: " + humidity + "%<br>Pressure: " + pressure + " hPa<br>Gases: " + gases + "%<br>Noise Level: " + sound + "%<br>Particles Concentration: " + particles + " μg/m3");
       var msBetweenDates = Math.abs(todayDate.getTime() - dateNum.getTime());
@@ -120,9 +121,26 @@ export default class EnviroMap extends React.Component {
       }
       //markers[i] = L.marker([latitude, longtitude]).addTo(mymap);					
     }
+    
   }
+  function onLocationFound(e) {
+				var radius = e.accuracy / 2;
+				mymap.setView(e.latlng, 20);
+				L.marker(e.latlng).addTo(mymap)
+				.bindPopup("You are within " + radius + " meters from this point").openPopup();
+				L.circle(e.latlng, radius).addTo(mymap);
+			}
+			function onLocationError(e) {
+				alert(e.message);
+			}
+			mymap.on('locationfound', onLocationFound);
+			mymap.on('locationerror', onLocationError);
+			mymap.locate({setView: true, maxZoom: 10});
+  function errData(err) {
+		console.log('Error!');
+	    console.log(err);
+    }
 
-  render() {
+  
     return <div style={{ width: "100%", height: "500px" }} id="enviroMap"></div>
-  }
 }

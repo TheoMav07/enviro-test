@@ -1,5 +1,5 @@
 #connectButton {
-  margin: 0;
+  margin-top: 10px;
   position: absolute;
   left: 50%;
   -ms-transform: translateX(-50%);
