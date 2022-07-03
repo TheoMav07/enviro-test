@@ -24,7 +24,7 @@ export default function EnviroMap() {
     };
     var layerControl = L.control.layers(overlayMaps).addTo(mymap);
     
-    mymap.on('locationfound', onLocationFound);
+        mymap.on('locationfound', onLocationFound);
     mymap.on('locationerror', onLocationError);
     mymap.locate({ setView: true, maxZoom: 10 });
 
@@ -38,6 +38,7 @@ export default function EnviroMap() {
     function onLocationError(e) {
       alert(e.message);
     }
+  
 
 
 
@@ -138,8 +139,8 @@ export default function EnviroMap() {
     }
 
   }
-
   
+
   function errData(err) {
     console.log('Error!');
     console.log(err);

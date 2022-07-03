@@ -1,4 +1,4 @@
-import React from "react";
+import { React } from "react";
 import { Button } from '@mui/material'
 import EnviroMap from "../map/enviroMap"
 import './styles/Map.css'
@@ -7,14 +7,37 @@ export default function Map() {
     
   return <div>
     <EnviroMap />
-    {/* <div style={{ width: "100%", height: "500px" }} id="enviroMap"></div> */}
     <div>
-      <Button variant="contained" disableElevation id="connectButton" onClick={Connect()}>Connect</Button>
+      <Button variant="contained" disableElevation id="connectButton" onClick={connect}>Connect</Button>
     </div>
   </div>;
 }
 
+function isWebBluetoothEnabled() {
+    if (!navigator.bluetooth) {
+      console.log('Web Bluetooth API is not available in this browser!')
+      return false
+    }
 
-function Connect() {
-    console.log("Clicked")
+    return true
+}
+
+function getDeviceInfo() {
+    let options = {
+        acceptAllDevices: true
+    }
+    console.log('Requesting Bluetooth Device...')
+    navigator.bluetooth.requestDevice(options).then(device => {
+      console.log('Name: ' + device.name)
+    }).catch(error => {
+      console.log('Argh! ' + error)
+    })
+}
+
+function connect() {
+    event.stopPropagation()
+    event.preventDefault()
+    if (isWebBluetoothEnabled()) {
+        getDeviceInfo()
+    }
 }
