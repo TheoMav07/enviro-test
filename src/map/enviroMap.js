@@ -34,6 +34,20 @@ export default function EnviroMap() {
       L.marker(e.latlng).addTo(mymap)
         .bindPopup("You are within " + radius + " meters from this point").openPopup();
       L.circle(e.latlng, radius).addTo(mymap);
+        
+   if (navigator.geolocation) { 
+    
+        navigator.geolocation.getCurrentPosition( setCurrentPosition, positionError, { 
+            enableHighAccuracy: true, 
+            timeout: 15000, 
+            maximumAge: 0 
+        } );
+    } 
+    
+    function setCurrentPosition( position ) { 
+        document.querySelector( '.latitude' ).innerHTML = position.coords.latitude; 
+        document.querySelector( '.longitude' ).innerHTML = position.coords.longitude; 
+      }
     }
     
     function onLocationError(e) {
@@ -137,7 +151,6 @@ export default function EnviroMap() {
     }
 
   }
-  
 
   function errData(err) {
     console.log('Error!');
