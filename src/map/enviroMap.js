@@ -71,13 +71,13 @@ export default function EnviroMap() {
     mymap.on('locationerror', onLocationError);
     mymap.locate({ setView: true, maxZoom: 10 }); */
 
-    //function onLocationFound(e) {
-      //var radius = e.accuracy / 2;
-      //mymap.setView(e.latlng, 20);
-      //L.marker(e.latlng).addTo(mymap)
-        //.bindPopup("You are within " + radius + " meters from this point").openPopup();
-      //L.circle(e.latlng, radius).addTo(mymap);
-    //}
+    /*function onLocationFound(e) {
+      var radius = e.accuracy / 2;
+      mymap.setView(e.latlng, 20);
+      L.marker(e.latlng).addTo(mymap)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+      L.circle(e.latlng, radius).addTo(mymap);
+    }*/
     
     function onLocationError(e) {
       alert(e.message);
