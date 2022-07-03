@@ -32,9 +32,14 @@ export default function EnviroMap() {
         } );
     } 
     
+    var latitude = document.querySelector( '.latitude' ).innerHTML;
+    var longitude = document.querySelector( '.longitude' ).innerHTML;
+    
     function setCurrentPosition( position ) { 
-        document.querySelector( '.latitude' ).innerHTML = position.coords.latitude; 
-        document.querySelector( '.longitude' ).innerHTML = position.coords.longitude; 
+       latitude = position.coords.latitude; 
+       longitude = position.coords.longitude; 
+       mymap.setView([latitude, longitude], 20);
+       L.marker([latitude, longitude]).addTo(mymap).bindPopup("You are in lat: " + latitude + " and long: " + longitude + ".").openPopup();       
     }
     
     function positionError( error ) { 
@@ -66,13 +71,13 @@ export default function EnviroMap() {
     mymap.on('locationerror', onLocationError);
     mymap.locate({ setView: true, maxZoom: 10 });
 
-    function onLocationFound(e) {
-      var radius = e.accuracy / 2;
-      mymap.setView(e.latlng, 20);
-      L.marker(e.latlng).addTo(mymap)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-      L.circle(e.latlng, radius).addTo(mymap);
-    }
+    //function onLocationFound(e) {
+      //var radius = e.accuracy / 2;
+      //mymap.setView(e.latlng, 20);
+      //L.marker(e.latlng).addTo(mymap)
+        //.bindPopup("You are within " + radius + " meters from this point").openPopup();
+      //L.circle(e.latlng, radius).addTo(mymap);
+    //}
     
     function onLocationError(e) {
       alert(e.message);
