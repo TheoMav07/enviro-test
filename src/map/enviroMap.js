@@ -24,7 +24,7 @@ export default function EnviroMap() {
     };
     var layerControl = L.control.layers(overlayMaps).addTo(mymap);
     
-        mymap.on('locationfound', onLocationFound);
+    mymap.on('locationfound', onLocationFound);
     mymap.on('locationerror', onLocationError);
     mymap.locate({ setView: true, maxZoom: 10 });
 
@@ -35,12 +35,10 @@ export default function EnviroMap() {
         .bindPopup("You are within " + radius + " meters from this point").openPopup();
       L.circle(e.latlng, radius).addTo(mymap);
     }
+    
     function onLocationError(e) {
       alert(e.message);
     }
-  
-
-
 
     var firebaseConfig = {
       apiKey: "AIzaSyBi2EOWgViitTUi4BlN1LuKM03sVEBXNhw",
