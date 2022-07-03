@@ -10,8 +10,8 @@ export default function Map() {
     <div>
       <Button variant="contained" disableElevation id="connectButton" onClick={connect}>Connect</Button>
     </div>
-    <h2 className="latitude"></h2>
-    <h2 className="longitude"></h2>
+    <h2 className="latitude">lat</h2>
+    <h2 className="longitude">long</h2>
   </div>;
 }
 
