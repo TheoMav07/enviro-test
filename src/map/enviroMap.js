@@ -79,9 +79,9 @@ export default function EnviroMap() {
       L.circle(e.latlng, radius).addTo(mymap);
     }*/
     
-    function onLocationError(e) {
+    /*function onLocationError(e) {
       alert(e.message);
-    }
+    }*/
 
     var firebaseConfig = {
       apiKey: "AIzaSyBi2EOWgViitTUi4BlN1LuKM03sVEBXNhw",
