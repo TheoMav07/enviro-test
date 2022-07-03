@@ -67,9 +67,9 @@ export default function EnviroMap() {
         }
     }
     
-    mymap.on('locationfound', onLocationFound);
+    /*mymap.on('locationfound', onLocationFound);
     mymap.on('locationerror', onLocationError);
-    mymap.locate({ setView: true, maxZoom: 10 });
+    mymap.locate({ setView: true, maxZoom: 10 }); */
 
     //function onLocationFound(e) {
       //var radius = e.accuracy / 2;
