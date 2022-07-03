@@ -32,14 +32,14 @@ export default function EnviroMap() {
         } );
     } 
     
-    var latitude = document.querySelector( '.latitude' ).innerHTML;
-    var longitude = document.querySelector( '.longitude' ).innerHTML;
-    var accuracy = document.querySelector( '.accuracy' ).innerHTML;
+    /*var latitude = document.querySelector( '.latitude' )
+    var longitude = document.querySelector( '.longitude' )
+    var accuracy = document.querySelector( '.accuracy' ) */
     
     function setCurrentPosition( position ) { 
-       latitude = position.coords.latitude; 
-       longitude = position.coords.longitude; 
-       accuracy = position.coords.accuracy;
+       var latitude = position.coords.latitude; 
+       var longitude = position.coords.longitude; 
+       var accuracy = position.coords.accuracy;
        var radius = accuracy / 2;
        mymap.setView([latitude, longitude], 20);
        L.marker([latitude, longitude]).addTo(mymap).bindPopup("You are in lat: " + latitude + " and long: " + longitude + ".").openPopup();
