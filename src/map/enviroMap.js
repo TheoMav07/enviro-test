@@ -24,19 +24,7 @@ export default function EnviroMap() {
     };
     var layerControl = L.control.layers(overlayMaps).addTo(mymap);
     
-    mymap.on('locationfound', onLocationFound);
-    mymap.on('locationerror', onLocationError);
-    mymap.locate({ setView: true, maxZoom: 10 });
-
-    function onLocationFound(e) {
-      var radius = e.accuracy / 2;
-      mymap.setView(e.latlng, 20);
-      L.marker(e.latlng).addTo(mymap)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-      L.circle(e.latlng, radius).addTo(mymap);
-        
-   if (navigator.geolocation) { 
-    
+    if (navigator.geolocation) { 
         navigator.geolocation.getCurrentPosition( setCurrentPosition, positionError, { 
             enableHighAccuracy: true, 
             timeout: 15000, 
@@ -47,7 +35,18 @@ export default function EnviroMap() {
     function setCurrentPosition( position ) { 
         document.querySelector( '.latitude' ).innerHTML = position.coords.latitude; 
         document.querySelector( '.longitude' ).innerHTML = position.coords.longitude; 
-      }
+    }
+    
+    mymap.on('locationfound', onLocationFound);
+    mymap.on('locationerror', onLocationError);
+    mymap.locate({ setView: true, maxZoom: 10 });
+
+    function onLocationFound(e) {
+      var radius = e.accuracy / 2;
+      mymap.setView(e.latlng, 20);
+      L.marker(e.latlng).addTo(mymap)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+      L.circle(e.latlng, radius).addTo(mymap);
     }
     
     function onLocationError(e) {
