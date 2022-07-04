@@ -1,0 +1,11 @@
+#connectButton {
+  margin-top: 10px;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.latitude, .longitude {
+  font-size: 20px;
+}
