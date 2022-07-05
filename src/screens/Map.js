@@ -2,18 +2,37 @@ import { React } from "react";
 import { Button } from '@mui/material'
 import EnviroMap from "../map/enviroMap"
 import './styles/Map.css'
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from 'firebase/database'
 
 export default function Map() {
     
-  return <div>
+
+var firebaseConfig = {
+      apiKey: "AIzaSyBi2EOWgViitTUi4BlN1LuKM03sVEBXNhw",
+      authDomain: "envirosocialv2.firebaseapp.com",
+      databaseURL: "https://envirosocialv2.firebaseio.com",
+      projectId: "envirosocialv2",
+      storageBucket: "envirosocialv2.appspot.com",
+      messagingSenderId: "239213374726",
+      appId: "1:239213374726:web:2de2c647a3fc5be213c287",
+      measurementId: "G-ZX6EYH5N9C"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const measurements = ref(database, "/Envirosocial")
+
+    
+  return <>
     <EnviroMap />
-    <div>
+    <div style={{width: "100%", height: "60px"}}>
       <Button variant="contained" disableElevation id="connectButton" onClick={connect}>Connect</Button>
     </div>
-    {/* <h2 className="latitude">lat</h2>
-    <h2 className="longitude">long</h2>
-    <h2 className="accuracy">acc</h2> */}
-  </div>;
+    <div>
+        <Button variant="contained" disableElevation id="sendButton" color="success" onClick={sendData}>Send Data</Button>
+    </div>
+  </>;
 }
 
 function isWebBluetoothEnabled() {
@@ -37,10 +56,14 @@ function getDeviceInfo() {
     })
 }
 
-function connect() {
+function connect(event) {
     event.stopPropagation()
     event.preventDefault()
     if (isWebBluetoothEnabled()) {
         getDeviceInfo()
     }
+}
+
+function sendData() {
+    
 }
