@@ -37,7 +37,7 @@ export default function EnviroMap() {
       messagingSenderId: process.env.REACT_APP_SENDER_ID,
       appId: process.env.REACT_APP_APP_ID
     };
-    
+
     // Αρχικοποιώ την σύνδεση
     firebase.initializeApp(firebaseConfig);
     //Δημιουργώ μια μεταβλητή για να αποθηκεύσω την αναφορά στην βάση δεδομένων
@@ -114,7 +114,7 @@ export default function EnviroMap() {
         markers[i] = L.marker([latitude, longtitude], { icon: redIcon }).addTo(all);
       }
       //Προσθέτω στον marker τα δεδομένα σε παράθυρο pop up
-      markers[i].bindPopup("<b>Measurement by " + username + "</b><br>Date:" + date + "<br>Temperature: " + temperature + " Celcius<br>Humidity: " + humidity + "%<br>Pressure: " + pressure + " hPa<br>Gases: " + gases + "%<br>Noise Level: " + sound + "%<br>Particles Concentration: " + particles + " μg/m3");
+      markers[i].bindPopup("<b>Measurement by " + username + "</b><br>Date: " + date + "<br>Temperature: " + temperature + " Celcius<br>Humidity: " + humidity + "%<br>Pressure: " + pressure + " hPa<br>Gases: " + gases + "%<br>Noise Level: " + sound + "%<br>Particles Concentration: " + particles + " μg/m3");
       var msBetweenDates = Math.abs(todayDate.getTime() - dateNum.getTime());
       var hoursBetweenDates = msBetweenDates / (1000 * 60 * 60);
       if (hoursBetweenDates < 24) {
