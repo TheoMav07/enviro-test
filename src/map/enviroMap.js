@@ -37,6 +37,7 @@ export default function EnviroMap() {
       messagingSenderId: process.env.REACT_APP_SENDER_ID,
       appId: process.env.REACT_APP_APP_ID
     };
+    
     // Αρχικοποιώ την σύνδεση
     firebase.initializeApp(firebaseConfig);
     //Δημιουργώ μια μεταβλητή για να αποθηκεύσω την αναφορά στην βάση δεδομένων
