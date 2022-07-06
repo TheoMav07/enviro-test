@@ -23,79 +23,19 @@ export default function EnviroMap() {
       "All": all
     };
     var layerControl = L.control.layers(overlayMaps).addTo(mymap);
-    
-    if (navigator.geolocation) { 
-        navigator.geolocation.getCurrentPosition( setCurrentPosition, positionError, { 
-            enableHighAccuracy: true, 
-            timeout: 15000, 
-            maximumAge: 0 
-        } );
-    } 
-    
-    /*var latitude = document.querySelector( '.latitude' )
-    var longitude = document.querySelector( '.longitude' )
-    var accuracy = document.querySelector( '.accuracy' ) */
-    
-    function setCurrentPosition( position ) { 
-       var latitude = position.coords.latitude; 
-       var longitude = position.coords.longitude; 
-       var accuracy = position.coords.accuracy;
-       var radius = accuracy / 2;
-       mymap.setView([latitude, longitude], 20);
-       L.marker([latitude, longitude]).addTo(mymap).bindPopup("You are in lat: " + latitude + " and long: " + longitude + ".").openPopup();
-       L.circle([latitude, longitude], radius).addTo(mymap);
-    }
-    
-    function positionError( error ) { 
-    
-        switch ( error.code ) { 
-            case error.PERMISSION_DENIED: 
-                
-                console.error( "User denied the request for Geolocation." ); 
-                break; 
-    
-            case error.POSITION_UNAVAILABLE: 
-    
-                console.error( "Location information is unavailable." ); 
-                break; 
-    
-            case error.TIMEOUT: 
-    
-                console.error( "The request to get user location timed out." ); 
-                break; 
-    
-            case error.UNKNOWN_ERROR: 
-    
-                console.error( "An unknown error occurred." ); 
-                break; 
-        }
-    }
-    
-    /*mymap.on('locationfound', onLocationFound);
-    mymap.on('locationerror', onLocationError);
-    mymap.locate({ setView: true, maxZoom: 10 }); */
 
-    /*function onLocationFound(e) {
-      var radius = e.accuracy / 2;
-      mymap.setView(e.latlng, 20);
-      L.marker(e.latlng).addTo(mymap)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
-      L.circle(e.latlng, radius).addTo(mymap);
-    }*/
-    
-    /*function onLocationError(e) {
-      alert(e.message);
-    }*/
+    mymap.setView([latitude, longitude], 20);
+    L.marker([latitude, longitude]).addTo(mymap).bindPopup("You are in lat: " + latitude + " and long: " + longitude + ".").openPopup();
+    L.circle([latitude, longitude], radius).addTo(mymap);
 
-    var firebaseConfig = {
-      apiKey: "AIzaSyBi2EOWgViitTUi4BlN1LuKM03sVEBXNhw",
-      authDomain: "envirosocialv2.firebaseapp.com",
-      databaseURL: "https://envirosocialv2.firebaseio.com",
-      projectId: "envirosocialv2",
-      storageBucket: "envirosocialv2.appspot.com",
-      messagingSenderId: "239213374726",
-      appId: "1:239213374726:web:2de2c647a3fc5be213c287",
-      measurementId: "G-ZX6EYH5N9C"
+    const firebaseConfig = {
+      apiKey: process.env.REACT_APP_API_KEY,
+      authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+      databaseURL: process.env.REACT_APP_DATABASE_URL,
+      projectId: process.env.REACT_APP_PROJECT_ID,
+      storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+      messagingSenderId: process.env.REACT_APP_SENDER_ID,
+      appId: process.env.REACT_APP_APP_ID
     };
     // Αρχικοποιώ την σύνδεση
     firebase.initializeApp(firebaseConfig);
@@ -154,14 +94,16 @@ export default function EnviroMap() {
       var dateNum = new Date(dateForNum[0], dateForNum[1] - 1, dateForNum[2], dateForNum[3], dateForNum[4], dateForNum[5]);
       //Στην λίστα metrisi_data κρατάω τo latitude το longtitude την θερμοκαρασία την υγρασία το cο το μεθάνιο τα μικροσωματίδια και τον ήχο τα οποία χωρίζονται με *
       var metrisi_data = metriseis[keys[i]].split("*");
-      var latitude = metrisi_data[0].substr(1, metrisi_data[0].length);
+      var latitude = metrisi_data[0]  //.substr(1, metrisi_data[0].length);
       var longtitude = metrisi_data[1];
       var temperature = Number(metrisi_data[2]);
       var humidity = Number(metrisi_data[3]);
       var pressure = Number(metrisi_data[4]);
       var gases = Number(metrisi_data[5]);
       var sound = Number(metrisi_data[6]);
-      var particles = Number(metrisi_data[7].substr(0, metrisi_data[7].length - 4));
+      var particles = Number(metrisi_data[7]
+        //.substr(0, metrisi_data[7].length - 4)
+        );
       //Προσθέτω έναν marker στον πίνακα markers με το γεωγραφικό πλάτος και μήκος της κάθε μέτρησης
       if (temperature > 10 && temperature < 25) {
         markers[i] = L.marker([latitude, longtitude], { icon: greenIcon }).addTo(all);
