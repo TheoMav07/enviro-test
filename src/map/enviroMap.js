@@ -1,6 +1,6 @@
 import { React, useEffect } from 'react'
 import L from 'leaflet'
-import firebase from 'firebase/compat'
+import firebase from 'firebase/compat/app'
 
 export default function EnviroMap() {
   var all = L.layerGroup();
