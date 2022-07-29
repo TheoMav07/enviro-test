@@ -21,12 +21,26 @@
   </noscript>
   <div id="root"></div>
   <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./serviceWorker.js");
-      });
-    }
+    function isWebBluetoothEnabled() {
+  if (!navigator.bluetooth) {
+    console.log('Web Bluetooth API is not available in this browser!')
+    return false
+  }
 
+  return true
+}
+
+ function getDeviceInfo() {
+  let options = {
+      acceptAllDevices: true
+  }
+  console.log('Requesting Bluetooth Device...')
+  navigator.bluetooth.requestDevice(options).then(device => {
+    console.log('Name: ' + device.name)
+  }).catch(error => {
+    console.log('Argh! ' + error)
+  })
+}
   </script>
 </body>
 
