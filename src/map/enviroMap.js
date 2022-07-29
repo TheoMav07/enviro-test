@@ -32,17 +32,14 @@ export default function EnviroMap() {
           maximumAge: 0 
       } );
     } 
-    
-    var latitude
-    var longitude
-    var accuracy
-    var radius
-    
     function setCurrentPosition( position ) { 
-      latitude = position.coords.latitude; 
-      longitude = position.coords.longitude; 
-      accuracy = position.coords.accuracy;
-      radius = accuracy / 2;
+       var latitude = position.coords.latitude; 
+       var longitude = position.coords.longitude; 
+       var accuracy = position.coords.accuracy;
+       var radius = accuracy / 2;
+       mymap.setView([latitude, longitude], 20);
+       L.marker([latitude, longitude]).addTo(mymap).bindPopup("You are in lat: " + latitude + " and long: " + longitude + ".").openPopup();
+       L.circle([latitude, longitude], radius).addTo(mymap);
     }
     
     function positionError( error ) { 
@@ -69,10 +66,6 @@ export default function EnviroMap() {
               break; 
       }
     }
-
-    mymap.setView([latitude, longitude], 20);
-    L.marker([latitude, longitude]).addTo(mymap).bindPopup("You are in lat: " + latitude + " and long: " + longitude + ".").openPopup();
-    L.circle([latitude, longitude], radius).addTo(mymap);
 
     const firebaseConfig = {
       apiKey: process.env.REACT_APP_API_KEY,
