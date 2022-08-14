@@ -7,6 +7,7 @@ import Leaderboard from "./screens/Leaderboard";
 import Map from "./screens/Map";
 import Graphs from "./screens/Graphs";
 import Profile from "./screens/Profile";
+import Login from "./screens/Login";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="graphs" element={<Graphs />} />
           <Route path="profile" element={<Profile />} />
         </Route>
+        <Route path="login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
