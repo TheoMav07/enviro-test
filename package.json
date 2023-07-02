@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@emotion/react": "11.10.0",
-    "@emotion/styled": "11.9.3",
+    "@emotion/styled": "11.11.0",
     "@mui/material": "5.9.2",
     "firebase": "^9.15.0",
     "leaflet": "^1.8.0",
